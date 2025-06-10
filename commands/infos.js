@@ -2,7 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 const BOT_INFO = {
     version: require('../package.json').version,
-    developer: "<@855168612323164210>",
+    developer: "<@855168612323164210>, <@571799872563576864>",
     supportServer: "https://discord.gg/Z2PCkW64",
     sourceCode: "https://github.com/qrlmza/vaelyna"
 };
