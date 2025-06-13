@@ -22,7 +22,6 @@ module.exports = {
         .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
 
     async execute(interaction) {
-        const muteRoleId = process.env.MUTE_ROLE;
         const targetUser = interaction.options.getUser("utilisateur");
         const targetMember = interaction.guild.members.cache.get(targetUser.id);
         const reason = interaction.options.getString("raison");
@@ -56,51 +55,43 @@ module.exports = {
             });
         }
 
-        const muteRole = interaction.guild.roles.cache.get(muteRoleId);
-        if(!muteRole) {
-            return await interaction.reply({
-                content: "Je n'arrives pas à trouver le rôle muet. 🙂‍↔️",
-                flags: MessageFlags.Ephemeral
-            });
-        }
-
-        if(targetMember.roles.cache.has(muteRole)) {
-            return await interaction.reply({
-                content: "Cet utilisateur est déjà muet, je pense qu'il a compris. 🙂‍↔️",
-                flags: MessageFlags.Ephemeral
-            });
-        }
-
         let timeoutDuration = null;
         if(duration) {
             timeoutDuration = parseDuration(duration);
             if(timeoutDuration === null) {
                 return await interaction.reply({
-                    content: "Ce format de duée est invalide. Utilisez plutôt quelque chose comme `1m`, `1h`... 😒",
+                    content: "Ce format de durée est invalide. Utilisez plutôt quelque chose comme `1m`, `1h`... 😒",
                     flags: MessageFlags.Ephemeral
                 });
             }
         }
 
-        await targetMember.roles.add(muteRole, `Utilisateur rendu muet par ${interaction.user.tag} : ${reason}`);
-
-        if(timeoutDuration) {
-            setTimeout(async () => {
-                try {
-                    const member = interaction.guild.members.cache.get(targetUser.id);
-                    if(member && member.roles.cache.has(muteRole)) {
-                        await member.roles.remove(muteRole, "Unmute automatique");
-                        // DM à l'utilisateur lors de l'unmute automatique
-                        try {
-                            await targetUser.send(`Vous avez été unmute après le délai qui vous a été infligé, pensez à rester respectueux à l'avenirs ! 😊`);
-                        } catch (error) {
-                            return;
-                        }
-                    }
-                } catch (error) {
-                    console.error("⚠️ → Une erreur est survenue lors de la mise en muet d'un utilsiateur : ", error);
-                }
-            }, timeoutDuration);
+        if (timeoutDuration) {
+            try {
+                await targetMember.timeout(timeoutDuration, `Mute par ${interaction.user.tag} : ${reason}`);
+            } catch (error) {
+                return await interaction.reply({
+                    content: "Impossible d'appliquer le mute Discord (timeout). Vérifiez mes permissions.",
+                    flags: MessageFlags.Ephemeral
+                });
+            }
+        } else {
+            // Si pas de durée, on applique le rôle mute classique
+            const muteRoleId = process.env.MUTE_ROLE;
+            const muteRole = interaction.guild.roles.cache.get(muteRoleId);
+            if(!muteRole) {
+                return await interaction.reply({
+                    content: "Je n'arrives pas à trouver le rôle muet. 🙂‍↔️",
+                    flags: MessageFlags.Ephemeral
+                });
+            }
+            if(targetMember.roles.cache.has(muteRole)) {
+                return await interaction.reply({
+                    content: "Cet utilisateur est déjà muet, je pense qu'il a compris. 🙂‍↔️",
+                    flags: MessageFlags.Ephemeral
+                });
+            }
+            await targetMember.roles.add(muteRole, `Utilisateur rendu muet par ${interaction.user.tag} : ${reason}`);
         }
 
         const durationText = duration ? `pendant **${duration}**` : " **indéfiniment**";
@@ -120,17 +111,17 @@ module.exports = {
     }
 };
 
-function parseDuration(durationString) {
+function parseDuration(durationString) { // this function is requiered for a good format of the time.
     const regex = /^(\d+)([smhd])$/i;
     const match = durationString.match(regex);
     if (!match) return null;
     const value = parseInt(match[1]);
     const unit = match[2].toLowerCase();
-    const multipliers = {
+    const multipliers = { // here we need to multiply the user input for set a good timer. Discord requires timestamp format.
         's': 1000,
         'm': 60 * 1000,
         'h': 60 * 60 * 1000,
         'd': 24 * 60 * 60 * 1000
     };
-    return value * multipliers[unit];
+    return value * multipliers[unit]; // return the good format of the time.
 }
