@@ -19,6 +19,7 @@ module.exports = {
         
         const disboardUrl = process.env.URL1;
         const serveurPriveUrl = process.env.URL2;
+        let url = "";
 
         const choice = interaction.options.getString("site");
 
