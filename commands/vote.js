@@ -43,7 +43,7 @@ module.exports = {
                     style: 5,
                     label: `Voter sur ${siteName}`,
                     url: url,
-                    emoji: '🗳️'
+                    emoji: { name: '🗳️' }
                 }]
             }]
         });
