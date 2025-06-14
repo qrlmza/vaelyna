@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, MessageFlags } = require('discord.js');
+const { SlashCommandBuilder, MessageFlags, EmbedBuilder } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -16,31 +16,36 @@ module.exports = {
         ),
 
     async execute(interaction) {
-        
         const disboardUrl = process.env.URL1;
         const serveurPriveUrl = process.env.URL2;
-        let url = "";
-
+        
         const choice = interaction.options.getString("site");
+        const url = choice === "disboard" ? disboardUrl : serveurPriveUrl;
+        const siteName = choice === "disboard" ? "Disboard" : "Serveur-privé.net";
 
-        if(choice = "disboard") {
-            url = disboardUrl
-        } else {
-            url = serveurPriveUrl
-        }
-
-        const embed = new Discord.EmbedBuilder()
+        const embed = new EmbedBuilder()
             .setColor(process.env.COLOR_INFO)
             .setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
-            .setThumbnail(guild.iconURL())
+            .setThumbnail(interaction.guild.iconURL())
             .addFields(
-                { name: "📡 Liens pour voter :", value: url }
+                { name: "📡 Lien pour voter :", value: `[Cliquez ici pour voter sur ${siteName}](${url})` }
             )
             .setTimestamp()
-            .setFooter({ text: "Merci pour votre soutiens !", iconURL: interaction.user.displayAvatarURL() })
+            .setFooter({ text: "Merci pour votre soutien !", iconURL: interaction.guild.iconURL() })
         
-        interaction.reply({ embeds: [embed], flags: MessageFlags.Ephemeral });
-
-
+        await interaction.reply({ 
+            embeds: [embed], 
+            flags: MessageFlags.Ephemeral,
+            components: [{
+                type: 1,
+                components: [{
+                    type: 2,
+                    style: 5,
+                    label: `Voter sur ${siteName}`,
+                    url: url,
+                    emoji: '🗳️'
+                }]
+            }]
+        });
     }
 };
