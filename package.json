@@ -32,6 +32,7 @@
     "start": "cls && node main.js"
   },
   "dependencies": {
+    "axios": "^1.10.0",
     "discord.js": "^14.21.0",
     "dotenv": "^16.6.1",
     "fs": "^0.0.1-security",

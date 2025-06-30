@@ -111,7 +111,7 @@ const commandsHandler = (client) => {
 
             try {
                 await command.execute(interaction);
-                console.log(`\x1b[32m ⟭ ${interaction.user.tag} executed /${command.data.name}`);
+                console.log(`\x1b[34m ⟭ ${interaction.user.tag} executed /${command.data.name}`);
             } catch (error) {
                 console.error(`\x1b[31m ⟭ Error executing command ${command.data.name}:`, error);
                 const errorMessage = {
