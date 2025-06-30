@@ -1,0 +1,41 @@
+{
+  "name": "vaelyna",
+  "version": "2.1.1",
+  "description": "Public version of my official discord bot. developed with Discord.js",
+  "keywords": [
+    "selunik",
+    "wehosting",
+    "qrlmza",
+    "discord",
+    "discordjs",
+    "discord.js",
+    "npm",
+    "nodejs",
+    "javascript",
+    "js",
+    "V2",
+    "Discord"
+  ],
+  "homepage": "https://github.com/qrlmza/vaelyna#readme",
+  "bugs": {
+    "url": "https://github.com/qrlmza/vaelyna/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/qrlmza/vaelyna.git"
+  },
+  "license": "Apache-2.0",
+  "author": "selunik",
+  "type": "commonjs",
+  "main": "main.js",
+  "scripts": {
+    "start": "cls && node main.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.21.0",
+    "dotenv": "^16.6.1",
+    "fs": "^0.0.1-security",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.14.1"
+  }
+}
