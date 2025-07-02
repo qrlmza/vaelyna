@@ -15,7 +15,7 @@ module.exports = (client) => {
             console.log("\x1b[32m ⟭ Bump detected, stating timer for reminder.");
             setTimeout(() => {
                 message.channel.send({
-                    content: `🔔 <@${bumpNotifRole}> Il est temps de refaire un </bump:947088344167366698> !`
+                    content: `🔔 <@&${bumpNotifRole}> Il est temps de refaire un </bump:947088344167366698> !`
                 });
             }, 2 * 60 * 60 * 1000); // 2 heures
         } else {
