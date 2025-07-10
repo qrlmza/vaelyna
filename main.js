@@ -23,7 +23,6 @@ const client = new Discord.Client({
 });
 
 client.commands = new Discord.Collection();
-const inviteCache = new Map();
 
 const readyHandler = require('./Handlers/ready');
 const commandsHandler = require('./Handlers/commands');
@@ -40,42 +39,5 @@ levelSystem(client);
 bumpReminder(client);
 customVoiceCreate(client);
 guildUserLeave(client);
-
-// update the invitions cache
-async function updateInviteCache(guild) {
-    try {
-        const invites = await guild.invites.fetch();
-        const inviteMap = new Map();
-
-        invites.forEach(invite => {
-            inviteMap.set(invite.code, invite.users);
-        });
-
-        inviteCache.set(guild.id, inviteMap);
-    } catch (error) {
-        console.error("\x1b[31m ⟭ An error occured while requesting invitations : ", error);
-    }
-}
-
-async function initInviteCache() {
-    for (const guild of client.guilds.cache.values()) {
-        await updateInviteCache(guild);
-    }
-}
-
-client.once('ready', async () => {
-    await initInviteCache();
-    console.log('\x1b[32m ⟭ Invite cache initialized !');
-});
-
-// when an invitation has benn created :
-client.on(Discord.Events.InviteCreate, async (invite) => {
-    await updateInviteCache(invite.guild);
-});
-
-// when an invitation has been deleted :
-client.on(Discord.Events.InviteDelete, async (invite) => {
-    await updateInviteCache(invite.guild);
-});
 
 client.login(TOKEN);
