@@ -23,14 +23,15 @@ const client = new Discord.Client({
 });
 
 client.commands = new Discord.Collection();
+const inviteCache = new Map();
 
 const readyHandler = require('./Handlers/ready');
 const commandsHandler = require('./Handlers/commands');
 const guildUserAdd = require('./Events/guildUserJoin');
-const levelSystem = require('./Events/levelSystem.js');
-const customVoiceCreate = require('./Events/levelSystem.js');
+const levelSystem = require('./Events/levelSystem');
+const customVoiceCreate = require('./Events/levelSystem');
 const bumpReminder = require('./Events/bumpRemind');
-const guildUserLeave = require('./Events/guildUserLeave.js')
+const guildUserLeave = require('./Events/guildUserLeave');
 
 readyHandler(client);
 commandsHandler(client);
@@ -39,5 +40,35 @@ levelSystem(client);
 bumpReminder(client);
 customVoiceCreate(client);
 guildUserLeave(client);
+
+// update the invitions cache
+async function updateInviteCache(guild) {
+    try {
+        const invites = await guild.invites.fetch();
+        const inviteMap = new Map();
+
+        invites.forEach(invite => {
+            inviteMap.set(invite.code, invite.users);
+        });
+
+        inviteCache.set(guild.id, inviteMap);
+    } catch (error) {
+        console.error("\x1b[31m ⟭ An error occured while requesting invitations : ", error);
+    }
+}
+
+for (const guild of client.guilds.cache.values()) {
+    await updateInviteCache(guild);
+}
+
+// when an invitation has benn created :
+client.on(Discord.Events.InviteCreate, async (invite) => {
+    await updateInviteCache(invite.guild);
+});
+
+// when an invitation has been deleted :
+client.on(Discord.Events.InviteDelete, async (invite) => {
+    await updateInviteCache(invite.guild);
+});
 
 client.login(TOKEN);
