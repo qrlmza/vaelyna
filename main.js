@@ -30,7 +30,6 @@ const guildUserAdd = require('./Events/guildUserJoin');
 const levelSystem = require('./Events/levelSystem');
 const customVoiceCreate = require('./Events/levelSystem');
 const bumpReminder = require('./Events/bumpRemind');
-const guildUserLeave = require('./Events/guildUserLeave');
 
 readyHandler(client);
 commandsHandler(client);
