@@ -37,6 +37,5 @@ guildUserAdd(client);
 levelSystem(client);
 bumpReminder(client);
 customVoiceCreate(client);
-guildUserLeave(client);
 
 client.login(TOKEN);
