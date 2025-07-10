@@ -57,9 +57,16 @@ async function updateInviteCache(guild) {
     }
 }
 
-for (const guild of client.guilds.cache.values()) {
-    await updateInviteCache(guild);
+async function initInviteCache() {
+    for (const guild of client.guilds.cache.values()) {
+        await updateInviteCache(guild);
+    }
 }
+
+client.once('ready', async () => {
+    await initInviteCache();
+    console.log('\x1b[32m ⟭ Invite cache initialized !');
+});
 
 // when an invitation has benn created :
 client.on(Discord.Events.InviteCreate, async (invite) => {
