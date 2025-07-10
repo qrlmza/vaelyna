@@ -26,10 +26,11 @@ const Roles = [
 const guildUserAdd = async (client) => {
 
     client.on("guildMemberAdd", async (member, inviter, invite) => {
-
         await Promise.all([
             member.roles.add(Roles),
         ]);
+
+        let usedInvite;
 
         try {
             const guild = member.guild;
