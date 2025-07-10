@@ -3,7 +3,7 @@
  * Welcome to the V2 of Vaelyna !
  * This Discord bot has been developed by Selunik
  * 
- * Support : https://discord.gg/FgtXcsQ8yv
+ * Support : https://discord.gg/bPh8PDHKHb
  *
  */
 
@@ -30,6 +30,7 @@ const guildUserAdd = require('./Events/guildUserJoin');
 const levelSystem = require('./Events/levelSystem.js');
 const customVoiceCreate = require('./Events/levelSystem.js');
 const bumpReminder = require('./Events/bumpRemind');
+const guildUserLeave = require('./Events/guildUserLeave.js')
 
 readyHandler(client);
 commandsHandler(client);
@@ -37,5 +38,6 @@ guildUserAdd(client);
 levelSystem(client);
 bumpReminder(client);
 customVoiceCreate(client);
+guildUserLeave(client);
 
 client.login(TOKEN);

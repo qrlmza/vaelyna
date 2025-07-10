@@ -1,4 +1,6 @@
 const Discord = require('discord.js');
+const InviteManager = require('discord-invite');
+const invClient = new InviteManager(client);
 require('dotenv').config();
 
 const {
@@ -25,11 +27,25 @@ const Roles = [
 
 const guildUserAdd = (client) => {
 
-    client.on("guildMemberAdd", async (member) => {
+    client.on("guildMemberAdd", async (member, inviter, invite) => {
 
         await Promise.all([
             member.roles.add(Roles),
         ]);
+
+        if(!inviter) {
+            console.log(`\x1b[33m ⟭ ${member.user.username} joined the server, but I couldn't find out who was invited.`);
+        } else if(member.id == inviter.id) {
+
+            console.log(`\x1b[33m ⟭ ${member.user.username} Joined the server by his own invitation!`);
+        }else if(member.guild.vanityURLCode == inviter) {
+
+            console.log(`\x1b[33m ⟭ ${member.user.username} Joined Server Using Vanity URL!`);
+        } else {
+            invClient.inviteAdd(member.guild.id, inviter,1);
+
+            console.log(`\x1b[33m ⟭ ${member.user.username} Joined the server! inviter ${inviter.username}`);
+        };
 
         const avatarURL = member.user.displayAvatarURL({ format: 'png', size: 128 });
         const username = member.user.username;
