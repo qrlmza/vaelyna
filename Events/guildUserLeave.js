@@ -1,11 +1,11 @@
 const Discord = require('discord.js');
-const InviteManager = require('discord-invite');
-const invClient = new InviteManager(client);
 require('dotenv').config();
 
 const guildUserLeave = (client) => {
+    const InviteManager = require('discord-invite');
+    const invClient = new InviteManager(client);
 
-    client.on("guildMemberRemove", async(member,inviter,invite) => {
+    client.on("guildMemberRemove", async(member, inviter, invite) => {
         if(!inviter) {
             console.log(`\x1b[33m ⟭ ${member.user.username} Lefted the server, but I couldn't find out who was invited.`);
         } else if(member.id == inviter.id) {

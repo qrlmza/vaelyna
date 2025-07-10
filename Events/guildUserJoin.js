@@ -1,6 +1,4 @@
 const Discord = require('discord.js');
-const InviteManager = require('discord-invite');
-const invClient = new InviteManager(client);
 require('dotenv').config();
 
 const {
@@ -26,6 +24,8 @@ const Roles = [
 ];
 
 const guildUserAdd = (client) => {
+    const InviteManager = require('discord-invite');
+    const invClient = new InviteManager(client);
 
     client.on("guildMemberAdd", async (member, inviter, invite) => {
 
