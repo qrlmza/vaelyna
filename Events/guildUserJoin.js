@@ -1,5 +1,6 @@
 const Discord = require('discord.js');
 require('dotenv').config();
+const { updateInviteCache } = require('../main');
 
 const {
     MEMBER_ROLE: memberRoleId,
