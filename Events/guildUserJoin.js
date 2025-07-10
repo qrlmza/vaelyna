@@ -23,7 +23,7 @@ const Roles = [
     levelZeroRoleId,
 ];
 
-const guildUserAdd = (client) => {
+const guildUserAdd = async (client) => {
 
     client.on("guildMemberAdd", async (member, inviter, invite) => {
 
