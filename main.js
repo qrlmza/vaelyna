@@ -28,7 +28,7 @@ const readyHandler = require('./Handlers/ready');
 const commandsHandler = require('./Handlers/commands');
 const guildUserAdd = require('./Events/guildUserJoin');
 const levelSystem = require('./Events/levelSystem');
-const customVoiceCreate = require('./Events/levelSystem');
+const customVoiceCreate = require('./Events/createVoiceChannel');
 const bumpReminder = require('./Events/bumpRemind');
 
 readyHandler(client);
