@@ -42,6 +42,6 @@ const createVoiceChannel = (client) => {
             }
         }
     });
-}
+};
 
-module.exports = createVoiceChannel();
+module.exports = createVoiceChannel;
