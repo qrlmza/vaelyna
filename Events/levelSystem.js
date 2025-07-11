@@ -6,13 +6,13 @@ const timer = true
 
 const LEVEL_ROLES = {
     0: 'Niveau 0',
-    10: 'Niveau 5',
-    25: 'Niveau 10',
-    37: 'Niveau 20',
-    150: 'Niveau 40',
-    320: 'Niveau 50',
-    500: 'Niveau 70',
-    1000: 'Niveau 100'
+    150: 'Niveau 5',
+    380: 'Niveau 10',
+    8702: 'Niveau 20',
+    9973: 'Niveau 40',
+    10240: 'Niveau 50',
+    11000: 'Niveau 70',
+    20584: 'Niveau 100'
 };
 
 const BOOSTED_ROLES = [
@@ -20,6 +20,13 @@ const BOOSTED_ROLES = [
     '💖  • ㅤServer Booster',
     '💐  • ㅤFemme de Selunik',
 ];
+
+const ROLE_BONUSES = {
+    '🌹  • ㅤAmis': 0.015,
+    '💖  • ㅤServer Booster': 0.032,
+    '💐  • ㅤFemme de Selunik': 0.015,
+};
+
 
 const levelSystem = (client) => {
     const cooldowns = new Map();
@@ -81,6 +88,17 @@ const levelSystem = (client) => {
                 const minExp = 0.8;
                 const maxExp = 2.8;
                 expToAdd = Math.random() * (maxExp - minExp) + minExp;
+            }            
+
+            let totalBonus = 0;
+            member.roles.cache.forEach(role => {
+                if (ROLE_BONUSES[role.name]) {
+                    totalBonus += ROLE_BONUSES[role.name];
+                }
+            });
+
+            if (totalBonus > 0) {
+                expToAdd = expToAdd * (1 + totalBonus);
             }
 
             expToAdd = Math.round(expToAdd * 100) / 100;
